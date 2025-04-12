@@ -11,7 +11,7 @@ class Animal:
     def eat(self, food):
        if self.hunger > 0:
            self.hunger -= 1
-           print(f"{self.name} ate {food}. Hunger is now {self.hunger}.")
+           print(f"{self.name} eat {food}. Hunger is now {self.hunger}.")
        else:
            print(f"{self.name} is not hungry.")
 
@@ -55,54 +55,87 @@ class Snake(Reptile):
 class Zoo:
     def __init__(self, name):
         self.name = name
-        self.animals =["Lion", "Eagle", "Snake"]
+        self.animals = []
 
     def add_animal(self, animal):
         self.animals.append(animal)
-        print(f"{animal.name} жаңы жаныбар {self.name} кошулду.")
+        print(f"{animal.name} зоопарка кошулду.")
 
     def remove_animal(self, animal_name):
-        animal_to_remove = None
         for animal in self.animals:
-              self.animals.remove(animal_to_remove)
-              print(f"{animal_name} жаныбар {self.name} зоопарктан чыгарылды.")
-        else:
-            print(f"{animal_name} зоопарктан табылган жок.")
+            if animal.name == animal_name:
+                self.animals.remove(animal)
+                print(f"{animal_name} зоопарктан чыгарылды.")
+                return
+        print(f"{animal_name} табылган жок.")
 
     def list_animals(self):
         if not self.animals:
-            print("The zoo is empty.")
+            print("Зоопарк бош.")
         else:
-            print(f"\nЗоопарктагы жаныбарлардын {self.name}:")
             for animal in self.animals:
                 animal.info()
 
     def feed_animal(self, food):
-        if not self.animals:
-            print("Зоопаркта тамактандырганга эч кандай жаныбар жок.")
-        else:
-            print("\nЖалпы жаныбарларды тамактандыруу:")
-            for animal in self.animals:
-                animal.eat(food)
+        for animal in self.animals:
+            animal.eat(food)
 
-        if __name__ == "__man__":
-            safari_zoo = Zoo("Safari")
+    def make_all_sounds(self):
+        for animal in self.animals:
+            animal.make_sound()
 
-            simba = Lion("Simba", 5,3)
-            aquila = Eagle("Aquila", 3,2)
-            nagini = Snake("Nagini", 4, 1)
 
-            safari_zoo.add_animal(simba)
-            safari_zoo.add_animal(aquila)
-            safari_zoo.add_animal(nagini)
+def zoo_menu():
+    zoo = Zoo("Jungle Park")
+    while True:
+        print("\n--- ZOO MENU ---")
+        print("1. Add Animal")
+        print("2. Remove Animal")
+        print("3. Show All Animals")
+        print("4. Feed All Animals")
+        print("5. Make All Animals Sound")
 
-            safari_zoo.list_animals_info()
+        choice = input("Choose (1-5): ")
 
-            safari_zoo.feed_all("meat")
+        if choice == "1":
+            print("a. Lion\nb. Eagle\nc. Snake")
+            animal_type = input("Type (a/b/c): ")
+            name = input("Animal name: ")
+            age = int(input("Age: "))
+            hunger = int(input("Hunger (0-5): "))
 
-            safari_zoo.remove_animal("Aquila")
+            if animal_type == "a":
+                zoo.add_animal(Lion(name, age, hunger))
+            elif animal_type == "b":
+                zoo.add_animal(Eagle(name, age, hunger))
+            elif animal_type == "c":
+                zoo.add_animal(Snake(name, age, hunger))
+            else:
+                print("Type not recognized.")
 
-            safari_zoo.list_animals_info()
+        elif choice == "2":
+            name = input("Animal name to remove: ")
+            zoo.remove_animal(name)
+
+        elif choice == "3":
+            zoo.list_animals()
+
+        elif choice == "4":
+            food = input("Food name: ")
+            zoo.feed_animal(food)
+
+        elif choice == "5":
+            zoo.make_all_sounds()
+
+
+
+if __name__ == "__main__":
+                zoo_menu()
+
+
+
+
+
 
 
 
